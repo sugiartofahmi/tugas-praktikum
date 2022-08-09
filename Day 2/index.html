@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fahmi</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div
+      id="app"
+      class="h-screen flex flex-col items-center flex-col gap-y-4 justify-center bg-blue-100"
+    >
+      <img :src="profileUser" class="rounded-full" alt="" />
+      <h1>{{firstName}} {{lastName}}</h1>
+
+      <button @click="getUser()">Get User</button>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>

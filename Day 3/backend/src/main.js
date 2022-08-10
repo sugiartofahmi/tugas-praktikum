@@ -56,7 +56,6 @@ app.get("/minuman", (req, res) => {
     },
   ]);
 });
-app.po;
 app.post("/create", (req, res) => {
   res.send({
     nama: req.body,

@@ -1,65 +1,50 @@
 import express from "express";
+import { PrismaClient } from "@prisma/client";
+const database = new PrismaClient();
 const app = express();
 app.use(express.json());
-const port = 7000;
+const port = 8000;
 
-app.get("/", (req, res) => {
-  res.send({
-    nama: "Fahmi Sugiarto",
-  });
+//get Mahasiswa
+app.get("/mahasiswa", async (req, res) => {
+  try {
+    const mahasiswa = await database.mahasiswa.findMany();
+    if (!mahasiswa) throw new Error("Mahasiswa Tidak Ditemukan");
+    res.send(mahasiswa);
+  } catch (err) {
+    res.send({ status: 404, message: err.message });
+  }
 });
-app.get("/makanan", (req, res) => {
-  res.send([
-    {
-      id: 1,
-      nama: "Indomie",
-      rasa: "Rendang",
-    },
-    {
-      id: 2,
-      nama: "Indomie",
-      rasa: "Aceh",
-    },
-    {
-      id: 3,
-      nama: "Indomie",
-      rasa: "Bandung",
-    },
-    {
-      id: 4,
-      nama: "Indomie",
-      rasa: "Ayam Bawang",
-    },
-  ]);
+//get Mahasiswa By Id
+app.get("/mahasiswa/:id", async (req, res) => {
+  try {
+    const mahasiswa = await database.mahasiswa.findUnique({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (!mahasiswa) throw new Error("Mahasiswa Tidak Ditemukan");
+    res.send(mahasiswa);
+  } catch (err) {
+    res.send({ status: 404, err: err.message });
+  }
 });
-app.get("/minuman", (req, res) => {
-  res.send([
-    {
-      id: 1,
-      nama: "Nutrisari",
-      rasa: "Jeruk",
-    },
-    {
-      id: 2,
-      nama: "Nutrisari",
-      rasa: "Baso",
-    },
-    {
-      id: 3,
-      nama: "Aqua",
-      rasa: "none",
-    },
-    {
-      id: 4,
-      nama: "Siera",
-      rasa: "None",
-    },
-  ]);
-});
-app.post("/create", (req, res) => {
-  res.send({
-    nama: req.body,
-  });
+
+//create data bahasiswa
+app.post("/mahasiswa/create", async (req, res) => {
+  try {
+    const mahasiswa = await database.mahasiswa.create({
+      data: {
+        name: req.body.name,
+        email: req.body.email,
+        nim: req.body.nim,
+      },
+    });
+    if (!mahasiswa) throw new Error("Gagal Menambahakan Data");
+    res.send({ message: "Data berhasil ditambahkan", data: mahasiswa });
+  } catch {
+    res.send({ status: 404, err: err.message });
+  }
 });
 
 app.listen(port, () => {

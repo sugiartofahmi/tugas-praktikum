@@ -42,7 +42,7 @@ app.post("/mahasiswa/create", async (req, res) => {
     });
     if (!mahasiswa) throw new Error("Gagal Menambahakan Data");
     res.send({ message: "Data berhasil ditambahkan", data: mahasiswa });
-  } catch {
+  } catch (err) {
     res.send({ status: 404, err: err.message });
   }
 });
